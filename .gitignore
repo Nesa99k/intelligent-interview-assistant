@@ -1,0 +1,24 @@
+# Virtual environment
+.venv-interviewer/
+.venv/
+venv/
+
+# Secrets
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/
+
+# Local agent / development files
+.agents/

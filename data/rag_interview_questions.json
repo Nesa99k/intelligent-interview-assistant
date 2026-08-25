@@ -1,0 +1,704 @@
+[
+  {
+    "id": "rag_0001",
+    "question": "چرا با وجود قدرتمند بودن LLMها، استفاده از RAG همچنان ضروری است؟",
+    "options": [
+      "زیرا LLMها بدون RAG قادر به تولید متن یا پاسخ‌گویی به پرسش‌های کاربران نیستند و RAG تنها روشی است که امکان استفاده از مدل‌های زبانی را فراهم می‌کند.",
+      "زیرا RAG تعداد پارامترهای LLM را افزایش می‌دهد و باعث می‌شود مدل بدون نیاز به آموزش مجدد، توانایی استدلال پیچیده‌تری پیدا کند.",
+      "زیرا دانش LLMها به داده‌های آموزشی آن‌ها وابسته و تا حدی ثابت است و ممکن است اطلاعات جدید یا اطلاعاتی خارج از داده‌های آموزشی را نداشته باشند؛ RAG با بازیابی اطلاعات مرتبط از منابع خارجی می‌تواند پاسخ‌ها را به دانش به‌روز و اختصاصی متصل کند.",
+      "زیرا RAG تمام دانش ذخیره‌شده در پارامترهای LLM را حذف کرده و مدل را مجبور می‌کند برای هر پرسش فقط از پایگاه داده خارجی استفاده کند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "easy",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0002",
+    "question": "آیا با وجود LLMهای دارای قابلیت پردازش Context بسیار طولانی، RAG همچنان کاربرد دارد؟",
+    "options": [
+      "خیر؛ با افزایش Context Window، RAG دیگر کاربردی ندارد، زیرا LLM می‌تواند تمام داده‌های موردنیاز را مستقیماً در Prompt دریافت کند.",
+      "بله؛ حتی با وجود Long Context، پردازش حجم زیادی از اطلاعات می‌تواند با مشکلاتی مانند «Lost in the Middle»، افزایش هزینه پردازش و افزایش Latency همراه باشد. RAG با بازیابی و ارائه اطلاعات مرتبط‌تر می‌تواند حجم Context موردنیاز را کاهش دهد و پاسخ‌گویی را کارآمدتر کند.",
+      "بله، اما فقط برای مدل‌هایی که Context Window آن‌ها کمتر از چند هزار Token است و در مدل‌های دارای Long Context استفاده از RAG معمولاً غیرممکن است.",
+      "خیر؛ RAG فقط برای رفع محدودیت تعداد Tokenهای قابل پردازش توسط LLM طراحی شده و با افزایش Context Window، تمام مشکلات RAG نیز به‌صورت خودکار برطرف می‌شوند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0003",
+    "question": "مهم‌ترین چالش‌های سیستم‌های RAG چیست؟",
+    "options": [
+      "مهم‌ترین چالش RAG فقط افزایش تعداد پارامترهای LLM است و مسائلی مانند Retrieval، Latency و کیفیت داده تأثیر قابل‌توجهی بر عملکرد سیستم ندارند.",
+      "چالش‌های اصلی RAG شامل مقیاس‌پذیری و هزینه Retrieval، افزایش Latency به دلیل مراحل Retrieval و Generation، احتمال تولید اطلاعات پشتیبانی‌نشده یا Hallucination در صورت ناکافی بودن Context، و انتقال Bias، خطا یا Noise موجود در منابع بازیابی‌شده به پاسخ نهایی است.",
+      "RAG فقط با مشکل کمبود داده مواجه است و هرچه Dataset کوچک‌تر باشد، احتمال Hallucination بیشتر می‌شود؛ سایر مشکلات معمولاً توسط Vector Database حل می‌شوند.",
+      "مهم‌ترین چالش RAG کاهش کیفیت Embeddingها است و در صورت استفاده از یک Embedding Model قدرتمند، مشکلات مربوط به هزینه، Latency، Bias و Hallucination به‌طور کامل از بین می‌روند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0004",
+    "question": "کدام روش‌ها می‌توانند به کاهش Latency در سیستم‌های RAG کمک کنند؟",
+    "options": [
+      "افزایش تعداد اسناد بازیابی‌شده، استفاده از Query Rewriting برای تمام پرسش‌ها و اجرای Re-ranking روی همه نتایج، زیرا افزایش محاسبات باعث کاهش زمان پاسخ‌گویی می‌شود.",
+      "استفاده از Caching برای جلوگیری از محاسبات تکراری، Quantization برای کاهش هزینه محاسباتی و حافظه Embeddingها، و اجرای انتخابی Query Rewriting و Re-ranking فقط در پرسش‌هایی که به آن‌ها نیاز دارند.",
+      "حذف مرحله Retrieval و ارسال مستقیم Query به LLM، زیرا Retrieval مهم‌ترین عامل افزایش Latency در RAG است.",
+      "افزایش اندازه Chunkها و کاهش تعداد اسناد موجود در پایگاه دانش، زیرا این کار همیشه هم زمان Retrieval و هم زمان Generation را کاهش می‌دهد."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "RAG Optimization"
+  },
+  {
+    "id": "rag_0005",
+    "question": "حروف R، A و G در عبارت Retrieval-Augmented Generation به چه معنا هستند؟",
+    "options": [
+      "R به Retrieval برای بازیابی اطلاعات مرتبط، A به Augmented برای افزودن Context بازیابی‌شده به Prompt، و G به Generation برای تولید پاسخ توسط LLM بر اساس Query، دستورها و Context اشاره دارد.",
+      "R به Reasoning، A به Attention و G به Generation اشاره دارد و هر سه مرحله در داخل معماری Transformer انجام می‌شوند.",
+      "R به Ranking، A به Attention و G به Grounding اشاره دارد و هدف اصلی آن‌ها آموزش مجدد LLM با داده‌های خارجی است.",
+      "R به Retrieval برای آموزش Embedding Model، A به Augmentation برای افزایش حجم Dataset و G به Generation برای Fine-tuning مدل اشاره دارد."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0006",
+    "question": "RAG چگونه می‌تواند به کاهش Hallucination در پاسخ‌های تولیدشده توسط LLM کمک کند؟",
+    "options": [
+      "با حذف کامل دانش ذخیره‌شده در پارامترهای LLM و مجبور کردن مدل به تولید پاسخ فقط از روی Query کاربر.",
+      "با افزایش تعداد پارامترهای LLM و آموزش مجدد آن پس از هر بار بازیابی اطلاعات از پایگاه دانش.",
+      "با بازیابی اطلاعات مرتبط از منابع خارجی و قرار دادن آن‌ها در Context مدل، به‌طوری که LLM بتواند پاسخ خود را بر اساس اطلاعات بازیابی‌شده و مرتبط با پرسش تولید کند.",
+      "با استفاده از Temperature بالاتر، که باعث می‌شود مدل هنگام مواجهه با اطلاعات ناقص، پاسخ دقیق‌تری تولید کند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "easy",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0007",
+    "question": "چرا Re-ranking پس از مرحله Initial Retrieval در یک Pipeline RAG اهمیت دارد؟",
+    "options": [
+      "زیرا Re-ranking تعداد پارامترهای LLM را کاهش می‌دهد و باعث می‌شود مرحله Generation سریع‌تر اجرا شود.",
+      "زیرا نتایج اولیه Retrieval ممکن است شامل Chunkهای نامرتبط یا کم‌ارتباط در رتبه‌های بالا باشند؛ Re-ranking با ارزیابی دقیق‌تر ارتباط Query و Chunk می‌تواند نتایج مرتبط‌تر را به رتبه‌های بالاتر منتقل و نویز Context را کاهش دهد.",
+      "زیرا Re-ranking وظیفه تبدیل Query متنی به Embedding را بر عهده دارد و بدون آن Vector Database نمی‌تواند جست‌وجو انجام دهد.",
+      "زیرا Re-ranking تمام Chunkهای بازیابی‌شده را حذف می‌کند و تنها یک Chunk را به LLM ارسال می‌کند تا از افزایش Context جلوگیری شود."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0008",
+    "question": "هدف از استفاده از Overlap هنگام Chunking در یک Pipeline RAG چیست؟",
+    "options": [
+      "افزایش تعداد Embeddingهای تولیدشده بدون تغییر محتوای اسناد، به‌منظور افزایش مصنوعی حجم پایگاه داده.",
+      "حذف اطلاعات تکراری بین Chunkها تا هر بخش از سند دقیقاً فقط در یک Chunk قرار بگیرد.",
+      "حفظ بخشی از متن بین Chunkهای متوالی برای کاهش احتمال از دست رفتن اطلاعات در مرز Chunkها و حفظ پیوستگی Context، که می‌تواند به بهبود Retrieval کمک کند.",
+      "افزایش اندازه Context Window مدل از طریق ترکیب خودکار تمام Chunkهای یک سند در زمان Retrieval."
+    ],
+    "correct_answer": 2,
+    "difficulty": "easy",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0009",
+    "question": "Cosine Similarity چه نقشی در بازیابی Chunkهای مرتبط در یک Pipeline RAG دارد؟",
+    "options": [
+      "میزان شباهت بین Embedding مربوط به Query و Embedding مربوط به هر Chunk را با توجه به زاویه بین بردارها اندازه‌گیری می‌کند؛ در حالت معمول، امتیاز بالاتر نشان‌دهنده شباهت معنایی بیشتر و در نتیجه ارتباط بیشتر Chunk با Query است.",
+      "فاصله فیزیکی بین دو سند را در فضای ذخیره‌سازی Vector Database اندازه‌گیری می‌کند و هرچه حجم فایل بزرگ‌تر باشد، امتیاز بیشتری به آن می‌دهد.",
+      "احتمال تولید هر Token توسط LLM را محاسبه می‌کند و بر اساس آن مشخص می‌کند کدام Chunk باید در Prompt قرار بگیرد.",
+      "میزان شباهت لغوی دو متن را با شمارش تعداد کلمات مشترک محاسبه می‌کند و هیچ ارتباطی با Embeddingهای معنایی ندارد."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0010",
+    "question": "کدام مورد نمونه‌ای از کاربرد واقعی RAG است که ارزش عملی آن را نشان می‌دهد؟",
+    "options": [
+      "استفاده از RAG برای حذف کامل نیاز به موتورهای جست‌وجو و ذخیره تمام اطلاعات اینترنت در پارامترهای LLM",
+      "استفاده از RAG در موتورهای جست‌وجوی مبتنی بر هوش مصنوعی، که با بازیابی اطلاعات مرتبط و به‌روز از منابع مختلف و ارائه آن‌ها به یک مدل مولد، پاسخ‌های مرتبط‌تر و متناسب با درخواست کاربر تولید می‌کنند.",
+      "استفاده از RAG فقط برای آموزش اولیه LLM و جلوگیری از استفاده مدل از داده‌های خارجی در زمان پاسخ‌گویی",
+      "استفاده از RAG برای افزایش تعداد پارامترهای مدل و بهبود توانایی آن در یادگیری زبان بدون نیاز به Retrieval"
+    ],
+    "correct_answer": 1,
+    "difficulty": "easy",
+    "category": "RAG Applications"
+  },
+  {
+    "id": "rag_0011",
+    "question": "مراحل اصلی Indexing در یک Pipeline RAG کدام‌اند؟",
+    "options": [
+      "ابتدا Query توسط LLM تولید می‌شود، سپس پاسخ تولیدشده Tokenize شده و در Vector Database ذخیره می‌شود.",
+      "ابتدا اسناد با Fine-tuning به دانش مدل تبدیل می‌شوند، سپس مدل در زمان Inference آن‌ها را بازیابی می‌کند.",
+      "اسناد ابتدا Parse می‌شوند تا محتوای آن‌ها استخراج شود، سپس به Chunkهای کوچک‌تر تقسیم می‌شوند، Chunkها با Embedding Model به بردار تبدیل می‌شوند و در نهایت Embeddingها در Vector Database ذخیره می‌شوند.",
+      "اسناد ابتدا به Token تبدیل می‌شوند، سپس مستقیماً با استفاده از Cosine Similarity در Vector Database جست‌وجو شده و نتیجه ذخیره می‌شود."
+    ],
+    "correct_answer": 2,
+    "difficulty": "easy",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0012",
+    "question": "چرا Chunking یکی از مراحل مهم در سیستم‌های RAG محسوب می‌شود؟",
+    "options": [
+      "زیرا تمام اسناد را به یک Embedding واحد تبدیل می‌کند و در نتیجه اندازه Vector Database را کاهش می‌دهد.",
+      "زیرا با تقسیم اسناد بزرگ به بخش‌های کوچک‌تر و معنایی‌تر، امکان بازیابی دقیق‌تر اطلاعات مرتبط را فراهم می‌کند و می‌تواند تعادل مناسبی بین حفظ Context، کاهش Noise و هزینه محاسباتی ایجاد کند.",
+      "زیرا باعث می‌شود LLM بدون نیاز به Retrieval بتواند تمام اطلاعات موجود در اسناد را در پارامترهای خود ذخیره کند.",
+      "زیرا Chunking باعث افزایش تعداد پارامترهای Embedding Model می‌شود و در نتیجه کیفیت Embeddingها را به‌صورت مستقیم افزایش می‌دهد."
+    ],
+    "correct_answer": 1,
+    "difficulty": "easy",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0013",
+    "question": "چگونه باید اندازه مناسب Chunk را برای یک سیستم RAG انتخاب کرد؟",
+    "options": [
+      "همیشه باید از کوچک‌ترین Chunk ممکن استفاده کرد، زیرا Chunkهای کوچک در تمام کاربردها دقیق‌تر هستند.",
+      "همیشه باید Chunkهایی با اندازه بسیار بزرگ انتخاب کرد، زیرا هرچه Context بیشتر باشد، Retrieval دقیق‌تر خواهد بود.",
+      "اندازه Chunk باید با درنظر گرفتن عواملی مانند میزان Granularity موردنیاز، حفظ Context، ساختار اسناد، نوع Query، Embedding Model و مدل مولد انتخاب شود؛ Chunkهای کوچک‌تر برای اطلاعات دقیق و Chunkهای بزرگ‌تر برای پرسش‌های نیازمند Context بیشتر می‌توانند مناسب‌تر باشند.",
+      "اندازه Chunk فقط به اندازه Context Window مدل LLM بستگی دارد و نوع سند، Query و Embedding Model هیچ تأثیری بر انتخاب آن ندارند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0014",
+    "question": "اگر اندازه Chunkها در یک سیستم RAG بیش از حد بزرگ یا بیش از حد کوچک باشد، چه پیامدهایی ممکن است ایجاد شود؟",
+    "options": [
+      "Chunkهای بزرگ ممکن است چند موضوع متفاوت و اطلاعات نامرتبط را با هم ترکیب کنند و Noise ایجاد کنند، در حالی که Chunkهای بسیار کوچک می‌توانند Context را تکه‌تکه کنند و باعث شوند اطلاعات مرتبط در Chunkهای جداگانه قرار گیرند و به‌طور هم‌زمان بازیابی نشوند.",
+      "Chunkهای بزرگ همیشه Retrieval را دقیق‌تر می‌کنند و تنها مشکل Chunkهای کوچک این است که سرعت Generation را کاهش می‌دهند.",
+      "Chunkهای کوچک باعث کاهش تعداد رکوردهای Vector Database می‌شوند، در حالی که Chunkهای بزرگ همیشه باعث افزایش تعداد Embeddingها خواهند شد.",
+      "اندازه Chunk تأثیر قابل‌توجهی بر Retrieval ندارد و کیفیت Embedding Model تقریباً تمام مشکلات ناشی از Chunking نامناسب را برطرف می‌کند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0015",
+    "question": "فرایند Retrieval در یک Pipeline RAG چگونه انجام می‌شود؟",
+    "options": [
+      "ابتدا LLM پاسخ نهایی را تولید می‌کند و سپس Embedding Model پاسخ را به Vector تبدیل می‌کند تا نزدیک‌ترین اسناد پیدا شوند.",
+      "ابتدا Query کاربر با استفاده از Embedding Model به یک بردار تبدیل می‌شود، سپس این بردار برای جست‌وجو در Vector Database استفاده می‌شود و بر اساس معیار شباهت، مرتبط‌ترین Chunkها بازیابی می‌شوند.",
+      "ابتدا Query به Chunk تبدیل می‌شود، سپس تمام اسناد موجود مستقیماً به LLM ارسال می‌شوند و LLM خودش Vector Database را جست‌وجو می‌کند.",
+      "ابتدا Vector Database با استفاده از Fine-tuning به‌روزرسانی می‌شود و سپس بدون نیاز به Embedding Query، نزدیک‌ترین Chunkها بر اساس طول متن انتخاب می‌شوند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "easy",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0016",
+    "question": "هنگام انتخاب یک LLM برای استفاده در سیستم RAG، چه عواملی باید مورد توجه قرار گیرند؟",
+    "options": [
+      "فقط تعداد پارامترهای مدل و حجم فایل مدل، زیرا مدل‌های بزرگ‌تر همیشه بهترین عملکرد را در RAG دارند.",
+      "توانایی مدل در درک و استفاده از Context بازیابی‌شده، اندازه Context Window، سرعت Inference، سازگاری با زیرساخت و هزینه و شرایط Licensing مدل.",
+      "فقط کیفیت Embedding Model و اندازه Vector Database، زیرا LLM در RAG نقش مستقیمی در کیفیت پاسخ ندارد.",
+      "فقط اندازه Context Window و Temperature، زیرا سایر ویژگی‌های مدل در زمان استفاده از RAG اهمیت چندانی ندارند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0017",
+    "question": "Prompt ورودی به LLM در یک سیستم RAG چه تفاوتی با Prompt در یک سیستم بدون RAG دارد؟",
+    "options": [
+      "در RAG، Prompt فقط شامل Query کاربر است و LLM باید اطلاعات موردنیاز را از پارامترهای خود استخراج کند.",
+      "در هر دو حالت Prompt دقیقاً یکسان است و RAG فقط در مرحله بعد از تولید پاسخ مورد استفاده قرار می‌گیرد.",
+      "در RAG، علاوه بر Query و دستورها، Context مرتبط بازیابی‌شده نیز در Prompt قرار می‌گیرد تا LLM بتواند پاسخ خود را با استفاده از اطلاعات فراهم‌شده تولید کند؛ در حالت Non-RAG معمولاً Query و دستورها بدون Context بازیابی‌شده خارجی ارائه می‌شوند.",
+      "در RAG، Query کاربر حذف می‌شود و فقط Context بازیابی‌شده به LLM داده می‌شود تا مدل پاسخ را تولید کند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "easy",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0018",
+    "question": "کدام گزینه مجموعه‌ای از مهم‌ترین Hyperparameterهای قابل تنظیم در یک Pipeline RAG را به‌درستی بیان می‌کند؟",
+    "options": [
+      "Chunk Size، Chunk Overlap، Embedding Dimension، Retrieval Top-K، Retrieval Threshold، Temperature و Max Output Length.",
+      "فقط تعداد پارامترهای LLM، تعداد لایه‌های Transformer و تعداد Attention Headها، زیرا این موارد تمام رفتار RAG را تعیین می‌کنند.",
+      "فقط Temperature، Learning Rate و Batch Size، زیرا Hyperparameterهای Retrieval و Chunking ثابت هستند.",
+      "فقط اندازه Vector Database، تعداد اسناد و حجم فایل‌های ورودی، زیرا پارامترهای Generation توسط RAG قابل تنظیم نیستند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "RAG Optimization"
+  },
+  {
+    "id": "rag_0019",
+    "question": "کدام گزینه فریم‌ورک‌های رایج برای پیاده‌سازی سیستم‌های RAG را به‌درستی معرفی می‌کند و انتخاب یک فریم‌ورک مناسب را بهتر توجیه می‌کند؟",
+    "options": [
+      "LangChain، LlamaIndex و Haystack از فریم‌ورک‌های رایج RAG هستند؛ انتخاب میان آن‌ها به نیاز پروژه بستگی دارد و برای مثال LangChain به‌دلیل اکوسیستم گسترده، مستندات مناسب و انعطاف‌پذیری در اتصال منابع داده و LLMها می‌تواند انتخاب مناسبی باشد.",
+      "فقط LangChain برای RAG مناسب است و LlamaIndex و Haystack عمدتاً برای آموزش مدل‌های زبانی استفاده می‌شوند.",
+      "LlamaIndex تنها فریم‌ورک مناسب RAG است، زیرا LangChain و Haystack قابلیت اتصال به Vector Database را ندارند.",
+      "فریم‌ورک‌های RAG تفاوت معناداری با یکدیگر ندارند و انتخاب آن‌ها فقط بر اساس تعداد پارامترهای LLM انجام می‌شود."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "RAG Frameworks"
+  },
+  {
+    "id": "rag_0020",
+    "question": "اندازه Context Window مدل LLM چه تأثیری بر Hyperparameterهای یک سیستم RAG دارد؟",
+    "options": [
+      "افزایش Context Window باعث می‌شود دیگر نیازی به تعیین Chunk Size و Top-K نباشد، زیرا LLM می‌تواند تمام اسناد را دریافت کند.",
+      "اندازه Context Window فقط بر مرحله Generation تأثیر دارد و هیچ ارتباطی با تعداد Chunkهای بازیابی‌شده یا اندازه آن‌ها ندارد.",
+      "Context Window بزرگ‌تر می‌تواند امکان ارسال Chunkهای بیشتر یا Chunkهای بزرگ‌تر را فراهم کند، اما افزایش بیش از حد Context لزوماً کیفیت را بهتر نمی‌کند و می‌تواند باعث افزایش Latency، هزینه و مشکلاتی مانند Lost in the Middle شود.",
+      "Context Window بزرگ‌تر همیشه باعث افزایش دقت پاسخ می‌شود و هیچ Trade-offای از نظر هزینه، Latency یا کیفیت Retrieval ایجاد نمی‌کند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "RAG Optimization"
+  },
+  {
+    "id": "rag_0021",
+    "question": "چگونه باید مقادیر Hyperparameterهای مربوط به Inference مانند Temperature و Max Output Tokens را در یک سیستم RAG انتخاب کرد؟",
+    "options": [
+      "Temperature باید همیشه روی مقدار بسیار بالا قرار گیرد تا پاسخ‌ها دقیق‌تر و مبتنی بر Context بازیابی‌شده باشند.",
+      "Temperature و Max Output Tokens باید برای تمام کاربردهای RAG مقادیر ثابتی داشته باشند، زیرا تغییر آن‌ها تأثیر قابل‌توجهی بر خروجی ندارد.",
+      "Temperature پایین‌تر معمولاً برای پاسخ‌های دقیق و Deterministic مناسب‌تر است، در حالی که مقادیر بالاتر خروجی متنوع‌تر و خلاقانه‌تری ایجاد می‌کنند؛ Max Output Tokens نیز باید متناسب با نیاز پاسخ و با درنظر گرفتن Trade-off بین کامل بودن پاسخ و Latency تنظیم شود. مقادیر مناسب معمولاً با آزمایش و ارزیابی در سناریوی واقعی تعیین می‌شوند.",
+      "Max Output Tokens باید همیشه برابر با اندازه Context Window باشد تا LLM بتواند تمام اطلاعات بازیابی‌شده را در پاسخ بازتولید کند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "RAG Optimization"
+  },
+  {
+    "id": "rag_0022",
+    "question": "برای استفاده به‌عنوان Generator در سیستم RAG، چه تفاوتی میان Reasoning LLMها و Non-Reasoning LLMها وجود دارد؟",
+    "options": [
+      "Reasoning LLMها معمولاً برای پرسش‌های پیچیده‌تر مناسب‌ترند، زیرا می‌توانند از محاسبات بیشتر در زمان پاسخ‌گویی برای تحلیل Context بازیابی‌شده و انجام استدلال چندمرحله‌ای استفاده کنند؛ در مقابل، Non-Reasoning LLMها معمولاً سریع‌تر و کم‌هزینه‌تر هستند و برای بسیاری از پرسش‌های ساده‌تر گزینه مناسبی محسوب می‌شوند.",
+      "Non-Reasoning LLMها همیشه از Reasoning LLMها دقیق‌تر هستند، زیرا در RAG فقط اطلاعات بازیابی‌شده اهمیت دارد و استدلال مدل نقشی در کیفیت پاسخ ندارد.",
+      "Reasoning LLMها فقط برای Retrieval استفاده می‌شوند و وظیفه Generation باید همیشه توسط یک Non-Reasoning LLM انجام شود.",
+      "تفاوت اصلی این دو نوع مدل فقط در اندازه Context Window است و استفاده از Reasoning در کیفیت تحلیل Context بازیابی‌شده تأثیری ندارد."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0023",
+    "question": "اگر Generator LLM در یک سیستم RAG ضعیف باشد، چه اتفاقی ممکن است رخ دهد؟",
+    "options": [
+      "کیفیت Retrieval به‌صورت خودکار افزایش می‌یابد، زیرا Generator ضعیف مجبور می‌شود اطلاعات بیشتری از Vector Database دریافت کند.",
+      "حتی اگر اطلاعات مرتبط به‌خوبی بازیابی شده باشند، مدل ممکن است در درک و استفاده صحیح از Context مشکل داشته باشد و پاسخ‌های ناقص، نامنسجم یا حتی Hallucinated تولید کند.",
+      "Generator ضعیف هیچ تأثیری بر کیفیت نهایی ندارد، زیرا تمام اطلاعات موردنیاز در مرحله Retrieval تعیین شده‌اند و LLM فقط آن‌ها را نمایش می‌دهد.",
+      "سیستم RAG در این حالت به‌طور خودکار Generator را با مدل قوی‌تر جایگزین می‌کند و بنابراین کیفیت پاسخ همیشه ثابت باقی می‌ماند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "easy",
+    "category": "RAG Architecture"
+  },
+  {
+    "id": "rag_0024",
+    "question": "برای مدیریت Queryهای مبهم یا کلی در یک سیستم RAG، کدام روش معمولاً می‌تواند به بهبود کیفیت Retrieval کمک کند؟",
+    "options": [
+      "حذف Query کاربر و ارسال مستقیم تمام اسناد موجود در Vector Database به LLM.",
+      "افزایش Temperature در Generator تا مدل بتواند اطلاعات بیشتری را از Query مبهم استنباط کند.",
+      "استفاده از Query Rewriting برای تبدیل Query مبهم به یک Query دقیق‌تر و مشخص‌تر، که می‌تواند باعث بهبود Relevance نتایج بازیابی‌شده و کاهش احتمال پاسخ‌های نادرست یا بی‌ارتباط شود.",
+      "کاهش تعداد اسناد موجود در Knowledge Base تا احتمال بازیابی اطلاعات نامرتبط به صفر برسد."
+    ],
+    "correct_answer": 2,
+    "difficulty": "easy",
+    "category": "Query Transformation"
+  },
+  {
+    "id": "rag_0025",
+    "question": "کدام گزینه مجموعه‌ای از تکنیک‌های رایج Query Transformation در RAG را به‌درستی معرفی می‌کند؟",
+    "options": [
+      "Query Rewriting برای دقیق‌تر کردن Query، Query Expansion برای گسترش یا عمومی‌تر کردن آن، Query Decomposition برای تقسیم Queryهای پیچیده به چند Sub-query، و HyDE برای تولید یک پاسخ فرضی و استفاده از Embedding آن به‌عنوان مبنای Retrieval.",
+      "فقط Query Rewriting و Query Tokenization، زیرا Query Expansion و HyDE مربوط به مرحله Generation هستند و در Retrieval کاربردی ندارند.",
+      "Query Decomposition برای ترکیب چند سند، Query Expansion برای حذف اطلاعات اضافی، و HyDE برای Fine-tuning کردن Embedding Model با Queryهای کاربران.",
+      "Query Rewriting برای تغییر مدل LLM، Query Expansion برای افزایش Context Window، Query Decomposition برای کاهش تعداد Tokenهای مدل و HyDE برای حذف Vector Database."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "Query Transformation"
+  },
+  {
+    "id": "rag_0026",
+    "question": "تکنیک‌های Query Transformation در سیستم‌های RAG چه مزایا و معایبی دارند؟",
+    "options": [
+      "این تکنیک‌ها فقط باعث افزایش دقت Retrieval می‌شوند و هیچ تأثیری بر Latency، هزینه محاسباتی یا میزان Noise ندارند.",
+      "این تکنیک‌ها می‌توانند با بهبود Query، نتایج مرتبط‌تری ایجاد کنند؛ اما ممکن است باعث افزایش هزینه و Latency شوند و در روش‌هایی مانند Query Expansion یا Decomposition، در صورت اجرای نامناسب، Noise یا انحراف از Intent اصلی Query ایجاد شود.",
+      "مهم‌ترین مزیت Query Transformation کاهش اندازه Vector Database است و مهم‌ترین عیب آن کاهش Context Window مدل LLM است.",
+      "Query Transformation همیشه باعث بهبود کیفیت پاسخ می‌شود و تنها در صورتی مشکل‌ساز است که Embedding Model از نوع Dense نباشد."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Query Transformation"
+  },
+  {
+    "id": "rag_0027",
+    "question": "تکنیک HyDE (Hypothetical Document Embedding) در یک سیستم RAG چگونه عمل می‌کند؟",
+    "options": [
+      "در مرحله Indexing برای هر Chunk چند سؤال فرضی تولید می‌کند و آن‌ها را در Vector Database ذخیره می‌کند.",
+      "Query کاربر را مستقیماً به Embedding تبدیل می‌کند و بدون هیچ مرحله میانی آن را برای Retrieval استفاده می‌کند.",
+      "در زمان Query، LLM ابتدا یک پاسخ یا Document فرضی و مرتبط با Query تولید می‌کند؛ سپس این متن فرضی به Embedding تبدیل شده و Embedding آن برای بازیابی Documentهای واقعی مشابه از پایگاه دانش استفاده می‌شود.",
+      "Query کاربر را به چند Sub-query تقسیم کرده و هر Sub-query را به‌صورت مستقل در Vector Database جست‌وجو می‌کند."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "Query Transformation"
+  },
+  {
+    "id": "rag_0028",
+    "question": "تکنیک HyPE (Hypothetical Prompt Embedding) در RAG چگونه عمل می‌کند؟",
+    "options": [
+      "در زمان Query، LLM برای هر پرسش یک پاسخ فرضی تولید می‌کند و Embedding آن برای Retrieval استفاده می‌شود.",
+      "در مرحله Indexing، برای هر Document Chunk سؤال‌های فرضی تولید و آن‌ها را به‌صورت Embedding ذخیره می‌کند تا در زمان Query بتوان سؤال کاربر را با این سؤال‌های فرضی مقایسه و بازیابی را انجام داد.",
+      "در زمان Retrieval، هر Document Chunk را به چند پاسخ فرضی تبدیل می‌کند و آن‌ها را مستقیماً به LLM ارسال می‌کند.",
+      "در مرحله Generation، Query کاربر را به Promptهای مختلف تبدیل می‌کند و بهترین پاسخ را با استفاده از Beam Search انتخاب می‌کند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "hard",
+    "category": "Query Transformation"
+  },
+  {
+    "id": "rag_0029",
+    "question": "تفاوت اصلی HyPE و HyDE در سیستم‌های RAG چیست؟",
+    "options": [
+      "HyDE در مرحله Indexing سؤال‌های فرضی تولید می‌کند، در حالی که HyPE در زمان Query پاسخ‌های فرضی تولید می‌کند.",
+      "HyPE و HyDE هر دو دقیقاً یک روش هستند و تنها تفاوت آن‌ها در نام‌گذاری است.",
+      "HyDE در زمان Query یک Document یا پاسخ فرضی تولید و آن را برای Retrieval به Embedding تبدیل می‌کند، در حالی که HyPE در مرحله Indexing برای Chunkها سؤال‌های فرضی تولید می‌کند و با انتقال این محاسبات به زمان Indexing، می‌تواند Latency زمان Retrieval را کاهش دهد.",
+      "HyPE فقط برای Generation استفاده می‌شود، در حالی که HyDE فقط برای کاهش اندازه Embeddingها طراحی شده است."
+    ],
+    "correct_answer": 2,
+    "difficulty": "hard",
+    "category": "Query Transformation"
+  },
+  {
+    "id": "rag_0030",
+    "question": "اگر هدف اصلی کاهش Latency در زمان اجرای Retrieval در یک سیستم RAG باشد، کدام تکنیک می‌تواند انتخاب مناسبی باشد؟",
+    "options": [
+      "HyDE، زیرا برای هر Query یک Document فرضی تولید می‌کند و این کار باعث حذف نیاز به LLM در زمان Query می‌شود.",
+      "Query Expansion، زیرا تولید چند Query جدید در زمان Retrieval همیشه سریع‌تر از استفاده از Query اصلی است.",
+      "Query Decomposition، زیرا تقسیم Query به چند Sub-query باعث می‌شود تعداد فراخوانی‌های LLM کاهش پیدا کند.",
+      "HyPE، زیرا سؤال‌های فرضی مرتبط با Document Chunkها در مرحله Indexing تولید و پیش‌محاسبه می‌شوند؛ بنابراین در زمان Retrieval نیازی به فراخوانی LLM برای تولید این سؤال‌ها نیست و بخشی از هزینه محاسباتی به مرحله Offline منتقل می‌شود."
+    ],
+    "correct_answer": 3,
+    "difficulty": "hard",
+    "category": "RAG Optimization"
+  },
+  {
+    "id": "rag_0031",
+    "question": "کدام گزینه تکنیک‌های رایج برای بهبود Chunkها در سیستم‌های RAG را به‌درستی معرفی می‌کند؟",
+    "options": [
+      "HyPE، Contextual Chunk Header و Document Augmentation؛ این روش‌ها با افزودن اطلاعات مفید یا ایجاد نمایش غنی‌تر از Chunkها می‌توانند Semantic Alignment و کیفیت Retrieval را بهبود دهند.",
+      "فقط Query Rewriting و Query Expansion؛ زیرا بهبود Chunkها تنها در زمان Query و با تغییر Query کاربر انجام می‌شود.",
+      "فقط Re-ranking و Cross-Encoder؛ زیرا Chunk Enhancement صرفاً به مرتب‌سازی نتایج Retrieval مربوط است.",
+      "Tokenization، Temperature و Beam Search؛ این تکنیک‌ها برای افزایش کیفیت Chunkها در مرحله Indexing استفاده می‌شوند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "Chunk Enhancement"
+  },
+  {
+    "id": "rag_0032",
+    "question": "تکنیک‌های Chunk Enhancement در RAG چه مزایا و معایبی دارند؟",
+    "options": [
+      "این تکنیک‌ها فقط حجم Storage را کاهش می‌دهند و تأثیر مستقیمی بر Retrieval یا کیفیت پاسخ ندارند.",
+      "این تکنیک‌ها می‌توانند با بهبود Semantic Alignment، حفظ Context و غنی‌سازی اطلاعات Chunkها، کیفیت Retrieval و در نتیجه Generation را بهتر کنند؛ اما معمولاً پیچیدگی فرآیند Indexing، هزینه محاسباتی و نیاز به Storage بیشتری ایجاد می‌کنند.",
+      "استفاده از Chunk Enhancement باعث حذف کامل نیاز به Embedding Model و Vector Database می‌شود، اما Latency زمان Query را افزایش می‌دهد.",
+      "این تکنیک‌ها همیشه باعث افزایش دقت می‌شوند و تنها نقطه‌ضعف آن‌ها افزایش تعداد Tokenهای خروجی LLM است."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Chunk Enhancement"
+  },
+  {
+    "id": "rag_0033",
+    "question": "تکنیک Contextual Chunk Header چگونه می‌تواند کیفیت Retrieval در یک سیستم RAG را بهبود دهد؟",
+    "options": [
+      "با حذف عنوان و اطلاعات اضافی از Chunkها، اندازه Embeddingها را کاهش می‌دهد و در نتیجه Retrieval سریع‌تر می‌شود.",
+      "با افزودن اطلاعاتی مانند عنوان Document، عنوان بخش یا خلاصه مرتبط به هر Chunk پیش از Embedding، Context بیشتری در اختیار مدل Retrieval قرار می‌دهد و به آن کمک می‌کند ارتباط و معنای Chunkهای مبهم یا جداشده از متن اصلی را بهتر تشخیص دهد.",
+      "با تولید پاسخ فرضی برای Query در زمان Retrieval، همانند HyDE عمل می‌کند و آن پاسخ را به‌عنوان Chunk جدید ذخیره می‌کند.",
+      "با تقسیم هر Chunk به چند Sub-query، تعداد نتایج Retrieval را افزایش می‌دهد و در نتیجه Recall را به‌صورت قطعی بالا می‌برد."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Chunk Enhancement"
+  },
+  {
+    "id": "rag_0034",
+    "question": "کدام گزینه روش‌های رایج Chunking در سیستم‌های RAG را به‌درستی بیان می‌کند؟",
+    "options": [
+      "Fixed-Size Chunking، Recursive Chunking، Semantic Chunking و Agentic Chunking.",
+      "Token Sampling، Beam Chunking، Attention Chunking و Temperature Chunking.",
+      "Query Rewriting، Query Expansion، HyDE و Re-ranking.",
+      "Dense Retrieval، Sparse Retrieval، Cross-Encoder و Vector Quantization."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0035",
+    "question": "برای انتخاب روش مناسب Chunking در یک سیستم RAG، چه عواملی باید در نظر گرفته شوند؟",
+    "options": [
+      "فقط اندازه مدل LLM و تعداد پارامترهای آن، زیرا روش Chunking ارتباطی با داده‌های ورودی ندارد.",
+      "فقط تعداد اسناد موجود در Vector Database و نوع Distance Metric مورد استفاده در Retrieval.",
+      "ساختار و ماهیت اسناد، قابلیت‌های Embedding Model، نیازمندی‌های کاربرد و نوع Task، و انتخاب Chunk Size مناسب برای ایجاد تعادل میان Context، Relevance و هزینه محاسباتی.",
+      "فقط سرعت تولید پاسخ توسط LLM؛ هرچه Generation سریع‌تر باشد، باید از Chunkهای کوچک‌تر استفاده شود."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0036",
+    "question": "مزایا و معایب Semantic Chunking در سیستم‌های RAG چیست؟",
+    "options": [
+      "Semantic Chunking با گروه‌بندی متن بر اساس معنا می‌تواند مرزهای طبیعی موضوعات را بهتر حفظ کرده و Relevance و Context را بهبود دهد؛ اما معمولاً به محاسبات بیشتری نیاز دارد و در اسناد پیچیده یا بدون ساختار ممکن است تشخیص مرزهای معنایی دشوار باشد.",
+      "Semantic Chunking همیشه سریع‌تر از Fixed-Size Chunking است و هیچ نیازی به Embedding Model ندارد.",
+      "Semantic Chunking فقط بر اساس تعداد ثابت Tokenها متن را تقسیم می‌کند و بنابراین برای اسناد بدون ساختار مناسب‌تر از سایر روش‌هاست.",
+      "مهم‌ترین مزیت Semantic Chunking کاهش Storage است و مهم‌ترین عیب آن افزایش اندازه Context Window موردنیاز LLM است."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0037",
+    "question": "استراتژی Chunking هنگام کار با اسناد ساختاریافته مانند PDFهای دارای جدول و شکل، چه تفاوتی با اسناد متنی ساده دارد؟",
+    "options": [
+      "برای هر دو نوع سند باید همیشه از Fixed-Size Chunking با اندازه یکسان استفاده کرد، زیرا ساختار صفحه تأثیری بر Retrieval ندارد.",
+      "در اسناد ساختاریافته باید عناصر و روابط موجود در سند مانند جدول‌ها، شکل‌ها، عنوان‌ها و صفحات حفظ شوند؛ بنابراین روش‌هایی مانند Agentic و Recursive Chunking معمولاً مناسب‌ترند، در حالی که برای متن ساده روش‌های ساده‌تر مانند Fixed-Size یا Semantic Chunking می‌توانند مناسب باشند.",
+      "اسناد ساختاریافته باید همیشه به یک Chunk واحد تبدیل شوند تا تمام روابط میان جدول‌ها و متن حفظ شود.",
+      "Semantic Chunking فقط برای PDFهای دارای جدول و شکل مناسب است و روش‌های Recursive و Agentic برای اسناد متنی ساده طراحی شده‌اند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Chunking"
+  },
+  {
+    "id": "rag_0038",
+    "question": "کدام گزینه می‌تواند از دلایل اصلی عملکرد ضعیف Retriever در یک سیستم RAG باشد؟",
+    "options": [
+      "Context Window بزرگ LLM و استفاده از Temperature پایین در مرحله Generation.",
+      "فقط تعداد زیاد Documentهای موجود در Knowledge Base، زیرا افزایش تعداد اسناد همیشه باعث کاهش دقت Retrieval می‌شود.",
+      "قدیمی یا ناقص بودن Knowledge Base، ضعیف بودن Retrieval Model، Embeddingهای بی‌کیفیت و نبود Fine-tuning متناسب با Domain می‌توانند باعث عملکرد ضعیف Retriever شوند.",
+      "استفاده از Chunkهای کوچک همیشه باعث عملکرد ضعیف Retriever می‌شود و با افزایش اندازه Chunk مشکل به‌طور کامل برطرف خواهد شد."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0039",
+    "question": "اگر Retriever در یک سیستم RAG ضعیف باشد، چه پیامدی برای کیفیت نهایی سیستم خواهد داشت؟",
+    "options": [
+      "Generator می‌تواند با اتکا به پارامترهای خود تمام اطلاعات موردنیاز را پیدا کند؛ بنابراین کیفیت Retrieval تأثیر چندانی بر پاسخ نهایی ندارد.",
+      "Retriever ضعیف ممکن است Chunkهای نامرتبط یا پر از Noise را بازیابی کند و این Context نامناسب می‌تواند باعث تولید پاسخ‌های نادرست، ناقص یا Hallucinated توسط Generator شود.",
+      "Retriever ضعیف فقط باعث افزایش زمان پاسخ می‌شود و هیچ تأثیری بر دقت یا صحت پاسخ Generator ندارد.",
+      "Generator به‌صورت خودکار Chunkهای نامرتبط را حذف می‌کند؛ بنابراین ضعف Retriever معمولاً با افزایش تعداد Chunkهای بازیابی‌شده جبران می‌شود."
+    ],
+    "correct_answer": 1,
+    "difficulty": "easy",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0040",
+    "question": "کدام گزینه روش‌های رایج Retrieval در سیستم‌های RAG را به‌درستی معرفی می‌کند؟",
+    "options": [
+      "Dense Retrieval، Sparse Retrieval و Hybrid Retrieval.",
+      "فقط Dense Retrieval و Cross-Encoder، زیرا Sparse Retrieval برای سیستم‌های RAG کاربرد ندارد.",
+      "Query Rewriting، Chunking و Generation، زیرا Retrieval با این سه مرحله انجام می‌شود.",
+      "Fixed-Size Retrieval، Recursive Retrieval و Semantic Retrieval که همگی روش‌های جایگزین برای Vector Search هستند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0041",
+    "question": "کدام گزینه مجموعه‌ای از چالش‌های رایج در مرحله Retrieval سیستم‌های RAG را به‌درستی بیان می‌کند؟",
+    "options": [
+      "فقط افزایش تعداد پارامترهای LLM و انتخاب Temperature نامناسب.",
+      "ضعف در درک Query و Intent کاربر، مشکلات مقیاس‌پذیری، Fragmentation شدن Context و دشواری پردازش داده‌های Multimodal.",
+      "فقط افزایش هزینه Fine-tuning و کاهش اندازه Vocabulary مدل Embedding.",
+      "حذف کامل نیاز به Chunking، افزایش Context Window و کاهش تعداد Tokenهای خروجی."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Retrieval"
+  },
+  {
+    "id": "rag_0042",
+    "question": "کدام گزینه معیارهای اصلی مورد استفاده برای ارزیابی کیفیت Retrieval در سیستم‌های RAG را به‌درستی معرفی می‌کند؟",
+    "options": [
+      "فقط Accuracy و F1-Score، زیرا معیارهای Ranking برای Retrieval کاربرد ندارند.",
+      "BLEU، ROUGE، Perplexity و Token Accuracy، زیرا این معیارها مستقیماً کیفیت Retrieval را اندازه‌گیری می‌کنند.",
+      "Precision، Recall، MRR و NDCG؛ Precision میزان مرتبط بودن نتایج بازیابی‌شده را اندازه می‌گیرد، Recall میزان پوشش اطلاعات مرتبط را ارزیابی می‌کند و MRR و NDCG کیفیت Ranking نتایج را نیز در نظر می‌گیرند.",
+      "فقط Latency و Throughput، زیرا اگر Retrieval سریع باشد، کیفیت نتایج نیز مناسب خواهد بود."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "Retrieval Evaluation"
+  },
+  {
+    "id": "rag_0043",
+    "question": "Embeddingها در سیستم‌های RAG چه هستند و چگونه در فرآیند Retrieval استفاده می‌شوند؟",
+    "options": [
+      "Embeddingها متن را به Vectorهای عددی تبدیل می‌کنند که اطلاعات معنایی را در یک فضای چندبعدی نمایش می‌دهند؛ در RAG، هم Query کاربر و هم Chunkهای اسناد به Vector تبدیل می‌شوند و با مقایسه میزان شباهت آن‌ها، مرتبط‌ترین Chunkها برای Generation بازیابی می‌شوند.",
+      "Embeddingها فقط برای تبدیل پاسخ نهایی LLM به متن قابل‌خواندن استفاده می‌شوند و در Retrieval نقشی ندارند.",
+      "Embeddingها فقط شناسه عددی هر Document را ذخیره می‌کنند و ارتباطی با معنای متن یا Semantic Search ندارند.",
+      "Embeddingها جایگزین LLM Generator هستند و مستقیماً پاسخ نهایی کاربر را بدون نیاز به Retrieval تولید می‌کنند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "Embeddings"
+  },
+  {
+    "id": "rag_0044",
+    "question": "هنگام انتخاب یک Embedding Model برای سیستم RAG، کدام مجموعه از عوامل اهمیت بیشتری دارد؟",
+    "options": [
+      "فقط تعداد پارامترهای مدل، زیرا هرچه مدل بزرگ‌تر باشد، Retrieval همیشه دقیق‌تر خواهد بود.",
+      "فقط Dimension مربوط به Embedding، زیرا Domain، هزینه، Latency و کیفیت مدل تأثیری بر عملکرد RAG ندارند.",
+      "ارتباط مدل با Domain داده‌ها، کیفیت عملکرد آن روی Dataset واقعی، Embedding Dimension، اندازه مدل، Latency، هزینه، نحوه دسترسی به مدل و شرایط Licensing.",
+      "فقط سرعت تولید Embedding، زیرا کیفیت Semantic Representation توسط Vector Database تعیین می‌شود."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "Embeddings"
+  },
+  {
+    "id": "rag_0045",
+    "question": "Vector Database (VectorDB) چیست و چه نقشی در Retrieval سیستم‌های RAG دارد؟",
+    "options": [
+      "پایگاه داده‌ای تخصصی برای ذخیره و جست‌وجوی Vectorهای Embedding است که با مقایسه Vector مربوط به Query با Vectorهای ذخیره‌شده، امکان بازیابی سریع Chunkهای مرتبط را فراهم می‌کند.",
+      "پایگاه داده‌ای است که فقط متن خام اسناد را ذخیره می‌کند و هیچ عملیات جست‌وجوی مبتنی بر شباهت Vector انجام نمی‌دهد.",
+      "یک مدل زبانی کوچک است که پس از Retrieval وظیفه تولید پاسخ نهایی را بر عهده می‌گیرد.",
+      "ابزاری برای Fine-tuning کردن LLM است که Embeddingها را به پارامترهای قابل‌آموزش مدل تبدیل می‌کند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "Vector Database"
+  },
+  {
+    "id": "rag_0046",
+    "question": "الگوریتم‌های Approximate Nearest Neighbor (ANN) چه نقشی در Retrieval سیستم‌های RAG دارند؟",
+    "options": [
+      "با بررسی تک‌تک تمام Vectorهای موجود، دقیق‌ترین نتیجه ممکن را پیدا می‌کنند و بنابراین هیچ Approximationای در فرآیند جست‌وجو وجود ندارد.",
+      "با محدود کردن فضای جست‌وجو و بررسی سریع‌تر مجموعه‌ای از Candidateهای مناسب، امکان یافتن Nearest Neighborهای تقریبی را بدون مقایسه با تمام Vectorها فراهم می‌کنند و در نتیجه سرعت و مقیاس‌پذیری Retrieval را بهبود می‌دهند.",
+      "ANN وظیفه تولید Embeddingهای جدید را بر عهده دارد و مستقیماً متن را به Vector تبدیل می‌کند.",
+      "ANN فقط در مرحله Generation استفاده می‌شود و ارتباطی با Vector Search یا Retrieval ندارد."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Vector Retrieval"
+  },
+  {
+    "id": "rag_0047",
+    "question": "فرآیند استفاده از ANN برای جست‌وجوی سریع در Retrieval سیستم RAG به‌طور کلی شامل چه مراحلی است؟",
+    "options": [
+      "Tokenization، Generation، Fine-tuning و Evaluation.",
+      "Encoding، Indexing، Navigating و Retrieving؛ ابتدا Query و Documentها به Vector تبدیل می‌شوند، سپس Vectorها Index می‌شوند، فضای جست‌وجو به‌صورت کارآمد پیمایش می‌شود و در نهایت نزدیک‌ترین Candidateها بازیابی می‌شوند.",
+      "Chunking، Prompting، Decoding و Detokenization.",
+      "Parsing، Generation، Re-ranking و Fine-tuning؛ در این روش نیازی به ساخت Index برای Vectorها وجود ندارد."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "Vector Retrieval"
+  },
+  {
+    "id": "rag_0048",
+    "question": "کدام گزینه معیارهای رایج برای اندازه‌گیری شباهت یا فاصله بین Vectorها در Vector Database را به‌درستی معرفی می‌کند؟",
+    "options": [
+      "Euclidean Distance، Cosine Similarity و Dot Product Similarity؛ انتخاب معیار مناسب به ویژگی داده‌ها و Embedding Model بستگی دارد.",
+      "فقط Accuracy و F1-Score، زیرا این معیارها برای اندازه‌گیری فاصله بین Vectorها طراحی شده‌اند.",
+      "فقط BLEU و ROUGE، زیرا Vector Database نیز مانند LLM خروجی متنی تولید می‌کند.",
+      "Temperature، Top-K و Top-P، زیرا این پارامترها میزان شباهت Vectorهای Query و Document را تعیین می‌کنند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "Vector Retrieval"
+  },
+  {
+    "id": "rag_0049",
+    "question": "چرا در بازیابی RAG معمولاً شباهت کسینوسی (Cosine Similarity) نسبت به برخی معیارهای فاصله دیگر ترجیح داده می‌شود؟",
+    "options": [
+      "زیرا شباهت کسینوسی فقط بر تعداد توکن‌های دو متن تمرکز می‌کند.",
+      "زیرا شباهت کسینوسی همیشه نسبت به فاصله اقلیدسی محاسبات کمتری دارد.",
+      "زیرا شباهت کسینوسی بیشتر بر جهت بردارها تمرکز دارد و نسبت به طول آن‌ها حساس نیست.",
+      "زیرا شباهت کسینوسی فقط برای بردارهای دودویی قابل استفاده است."
+    ],
+    "correct_answer": 2,
+    "difficulty": "medium",
+    "category": "RAG Retrieval"
+  },
+  {
+    "id": "rag_0050",
+    "question": "تفاوت اصلی بازیابی مبتنی بر کلمات کلیدی (Keyword-based Retrieval) و بازیابی معنایی (Semantic Retrieval) در سیستم‌های RAG چیست؟",
+    "options": [
+      "بازیابی مبتنی بر کلمات کلیدی بر تطبیق واژه‌ها تمرکز دارد، در حالی که بازیابی معنایی با استفاده از embeddingها ارتباط مفهومی بین متن‌ها را در نظر می‌گیرد.",
+      "بازیابی معنایی فقط زمانی کار می‌کند که کلمات پرس‌وجو دقیقاً در اسناد وجود داشته باشند.",
+      "بازیابی مبتنی بر کلمات کلیدی همیشه از embeddingهای متراکم استفاده می‌کند، در حالی که بازیابی معنایی از تطبیق رشته‌ای استفاده می‌کند.",
+      "هر دو روش دقیقاً یکسان عمل می‌کنند و تفاوتی در نحوه بازیابی اطلاعات ندارند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "easy",
+    "category": "RAG Retrieval"
+  },
+  {
+    "id": "rag_0051",
+    "question": "جست‌وجوی ترکیبی (Hybrid Search) در سیستم‌های RAG چگونه کار می‌کند؟",
+    "options": [
+      "چند مدل زبانی مختلف را برای تولید پاسخ نهایی به‌صورت هم‌زمان اجرا می‌کند.",
+      "جست‌وجوی مبتنی بر کلمات کلیدی و جست‌وجوی معنایی مبتنی بر بردار را ترکیب می‌کند و نتایج آن‌ها را با روشی مانند وزن‌دهی به امتیازها ادغام می‌کند.",
+      "ابتدا متن را به چند chunk تقسیم می‌کند و سپس فقط از جست‌وجوی معنایی استفاده می‌کند.",
+      "فقط اسنادی را بازیابی می‌کند که هم از نظر تعداد کلمات و هم از نظر طول embedding یکسان باشند."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "RAG Retrieval"
+  },
+  {
+    "id": "rag_0052",
+    "question": "در چه شرایطی استفاده از Hybrid Search به جای Semantic Search خالص انتخاب مناسب‌تری است؟",
+    "options": [
+      "زمانی که هیچ‌گونه تطبیق دقیق کلمات یا موجودیت‌ها در پرس‌وجو اهمیت نداشته باشد.",
+      "زمانی که فقط پاسخ‌های خلاقانه و غیرقطعی موردنیاز باشند.",
+      "زمانی که پایگاه دانش فقط شامل داده‌های تصویری باشد.",
+      "زمانی که علاوه بر درک معنایی، تطبیق دقیق اصطلاحات، کدها یا موجودیت‌های خاص نیز اهمیت داشته باشد."
+    ],
+    "correct_answer": 3,
+    "difficulty": "medium",
+    "category": "RAG Retrieval"
+  },
+  {
+    "id": "rag_0053",
+    "question": "چگونه می‌توان بین ارتباط (Relevance) و تنوع (Diversity) در بازیابی chunkها در یک سیستم RAG تعادل ایجاد کرد؟",
+    "options": [
+      "با افزایش تعداد chunkهای بازیابی‌شده بدون توجه به میزان شباهت آن‌ها.",
+      "با انتخاب chunkهایی که هم با پرس‌وجو مرتبط باشند و هم تا حد امکان اطلاعات تکراری کمتری نسبت به یکدیگر داشته باشند؛ برای مثال با استفاده از MMR.",
+      "با حذف تمام chunkهایی که شباهت معنایی بالایی با پرس‌وجو دارند.",
+      "با استفاده از فقط یک chunk با بالاترین امتیاز شباهت."
+    ],
+    "correct_answer": 1,
+    "difficulty": "medium",
+    "category": "RAG Retrieval"
+  },
+  {
+    "id": "rag_0054",
+    "question": "تفاوت اصلی embeddingهای تنک (Sparse) و embeddingهای متراکم (Dense) از نظر تطبیق کلمات کلیدی و تفسیرپذیری چیست؟",
+    "options": [
+      "embeddingهای تنک معمولاً برای تطبیق دقیق کلمات کلیدی و تفسیرپذیری بهتر مناسب‌اند، در حالی که embeddingهای متراکم روابط معنایی و مفهومی را بهتر نمایش می‌دهند.",
+      "embeddingهای متراکم فقط شامل صفر هستند و برای تطبیق دقیق کلمات کلیدی استفاده می‌شوند.",
+      "embeddingهای تنک و متراکم از نظر نحوه نمایش اطلاعات و کاربرد در بازیابی تفاوتی ندارند.",
+      "embeddingهای تنک همیشه روابط معنایی پیچیده را بهتر از embeddingهای متراکم ثبت می‌کنند."
+    ],
+    "correct_answer": 0,
+    "difficulty": "medium",
+    "category": "RAG Embeddings"
+  }
+]
