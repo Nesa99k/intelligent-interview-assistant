@@ -504,7 +504,3 @@ This provides a practical example of combining **LLM reasoning with controlled s
 ## Author
 
 **Nesa Karimi**
-
-```
-
-```
