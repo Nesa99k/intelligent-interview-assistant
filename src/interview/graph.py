@@ -1,8 +1,8 @@
 import streamlit as st
 import json
+import time
 
 from langgraph.graph import StateGraph, START, END
-
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage
 
@@ -14,6 +14,9 @@ from src.interview.state import InterviewState
 # --------------------------------------------------
 
 MAX_QUESTIONS = 10
+
+# Number of candidate questions presented to the Agent
+CANDIDATE_LIMIT = 15
 
 
 # --------------------------------------------------
@@ -52,8 +55,13 @@ def select_initial_question(
         )
 
     # --------------------------------------------------
-    # Start With Easy Question
+    # Initial question
+    #
+    # Start from Easy questions, but choose randomly
+    # instead of always selecting the first question.
     # --------------------------------------------------
+
+    import random
 
     easy_questions = [
         question
@@ -62,9 +70,9 @@ def select_initial_question(
     ]
 
     if easy_questions:
-        question = easy_questions[0]
+        question = random.choice(easy_questions)
     else:
-        question = questions[0]
+        question = random.choice(questions)
 
     # --------------------------------------------------
     # Update State
@@ -127,53 +135,161 @@ def evaluate_answer(
             "selected_answer": user_answer,
             "correct_answer": correct_answer,
             "is_correct": is_correct,
-
             "category": question["category"],
             "difficulty": question["difficulty"],
         }
     )
 
     # --------------------------------------------------
-    # Adaptive Difficulty
-    # --------------------------------------------------
-
-    current_difficulty = (
-        state["current_difficulty"]
-    )
-
-    if is_correct:
-
-        if current_difficulty == "easy":
-            next_difficulty = "medium"
-
-        elif current_difficulty == "medium":
-            next_difficulty = "hard"
-
-        else:
-            next_difficulty = "hard"
-
-    else:
-
-        if current_difficulty == "hard":
-            next_difficulty = "medium"
-
-        elif current_difficulty == "medium":
-            next_difficulty = "easy"
-
-        else:
-            next_difficulty = "easy"
-
-    state["current_difficulty"] = (
-        next_difficulty
-    )
-
-    # --------------------------------------------------
-    # Clear Answer
+    # Clear User Answer
     # --------------------------------------------------
 
     state["user_answer"] = None
 
     return state
+
+
+# --------------------------------------------------
+# Prepare Candidate Questions
+# --------------------------------------------------
+
+def prepare_candidate_questions(
+    state: InterviewState
+):
+
+    questions = state["question_bank"]
+
+    # --------------------------------------------------
+    # Remove already asked questions
+    # --------------------------------------------------
+
+    asked_ids = {
+        answer["question_id"]
+        for answer in state["answers"]
+    }
+
+    available_questions = [
+        question
+        for question in questions
+        if question["id"] not in asked_ids
+    ]
+
+    if not available_questions:
+        return []
+
+    # --------------------------------------------------
+    # Recently asked categories
+    # --------------------------------------------------
+
+    recent_answers = state["answers"][-3:]
+
+    recent_categories = {
+        answer["category"]
+        for answer in recent_answers
+    }
+
+    # --------------------------------------------------
+    # Group questions by difficulty
+    # --------------------------------------------------
+
+    easy_questions = [
+        q for q in available_questions
+        if q["difficulty"] == "easy"
+    ]
+
+    medium_questions = [
+        q for q in available_questions
+        if q["difficulty"] == "medium"
+    ]
+
+    hard_questions = [
+        q for q in available_questions
+        if q["difficulty"] == "hard"
+    ]
+
+    # --------------------------------------------------
+    # Prefer category diversity
+    #
+    # Questions from recently used categories are
+    # deprioritized, not completely removed.
+    # --------------------------------------------------
+
+    def diversity_score(question):
+
+        if question["category"] in recent_categories:
+            return 0
+
+        return 1
+
+    easy_questions.sort(
+        key=diversity_score,
+        reverse=True
+    )
+
+    medium_questions.sort(
+        key=diversity_score,
+        reverse=True
+    )
+
+    hard_questions.sort(
+        key=diversity_score,
+        reverse=True
+    )
+
+    # --------------------------------------------------
+    # Build diverse candidate pool
+    #
+    # We intentionally expose multiple difficulties
+    # to the Agent.
+    # --------------------------------------------------
+
+    candidates = []
+
+    # Easy candidates
+    candidates.extend(
+        easy_questions[:5]
+    )
+
+    # Medium candidates
+    candidates.extend(
+        medium_questions[:6]
+    )
+
+    # Hard candidates
+    candidates.extend(
+        hard_questions[:4]
+    )
+
+    # --------------------------------------------------
+    # If we have more than the limit, trim.
+    # --------------------------------------------------
+
+    candidates = candidates[:CANDIDATE_LIMIT]
+
+    # --------------------------------------------------
+    # Safety fallback
+    # --------------------------------------------------
+
+    if len(candidates) < CANDIDATE_LIMIT:
+
+        existing_ids = {
+            q["id"]
+            for q in candidates
+        }
+
+        remaining = [
+            q
+            for q in available_questions
+            if q["id"] not in existing_ids
+        ]
+
+        candidates.extend(
+            remaining[
+                :CANDIDATE_LIMIT - len(candidates)
+            ]
+        )
+
+    return candidates
 
 
 # --------------------------------------------------
@@ -202,21 +318,14 @@ def agent_select_question(
         return state
 
     # --------------------------------------------------
-    # Remove Already Asked Questions
+    # Prepare Candidate Questions
     # --------------------------------------------------
 
-    asked_ids = {
-        answer["question_id"]
-        for answer in state["answers"]
-    }
+    candidate_questions = (
+        prepare_candidate_questions(state)
+    )
 
-    available_questions = [
-        question
-        for question in questions
-        if question["id"] not in asked_ids
-    ]
-
-    if not available_questions:
+    if not candidate_questions:
 
         state["interview_finished"] = True
 
@@ -228,7 +337,7 @@ def agent_select_question(
 
     question_options = []
 
-    for question in available_questions:
+    for question in candidate_questions:
 
         question_options.append(
             {
@@ -257,8 +366,20 @@ def agent_select_question(
 
                 "difficulty":
                     answer["difficulty"],
+
+                "category":
+                    answer["category"],
             }
         )
+
+    # --------------------------------------------------
+    # Recent Categories
+    # --------------------------------------------------
+
+    recent_categories = [
+        answer["category"]
+        for answer in state["answers"][-3:]
+    ]
 
     # --------------------------------------------------
     # Agent Prompt
@@ -267,52 +388,88 @@ def agent_select_question(
     prompt = f"""
 You are an adaptive technical interviewer.
 
-Your task is to select the best NEXT question
-from the provided question bank.
+Your job is to make the BEST possible decision
+about the candidate's next interview question.
+
+You have full responsibility for deciding:
+
+1. The appropriate difficulty of the next question.
+2. The technical area that should be assessed.
+3. Which ONE question should be selected.
 
 Candidate information:
+
 {json.dumps(
         state["candidate"],
         ensure_ascii=False
     )}
 
-Current target difficulty:
-{state["current_difficulty"]}
+Previous interview performance:
 
-Previous answers:
 {json.dumps(
         previous_answers,
         ensure_ascii=False
     )}
 
-Available questions:
+Recently used categories:
+
+{json.dumps(
+        recent_categories,
+        ensure_ascii=False
+    )}
+
+Current question difficulty:
+
+{state["current_difficulty"]}
+
+Candidate questions available for selection:
+
 {json.dumps(
         question_options,
         ensure_ascii=False
     )}
 
-Rules:
+IMPORTANT DECISION PRINCIPLES:
+
+- You are NOT following a fixed difficulty progression.
+- You decide the next difficulty based on the
+  candidate's demonstrated ability.
+- Correct answers may justify a harder question,
+  but do not automatically require one.
+- Incorrect answers may justify an easier question,
+  but do not automatically require one.
+- Consider the candidate's overall performance.
+- Consider the difficulty of previous questions.
+- Consider the technical categories already assessed.
+- Prefer technical diversity when it improves the
+  quality of the assessment.
+- Avoid repeatedly testing the same technical category
+  when other useful categories are available.
+- Consider Hard questions when the candidate's
+  demonstrated performance justifies deeper assessment.
+- Do not avoid Hard questions merely because they are
+  less numerous in the question bank.
+- Do not artificially force an Easy, Medium, or Hard
+  distribution.
+- Do not artificially force an LLM/RAG distribution.
+- Your objective is to maximize the information gained
+  about the candidate's actual technical ability.
+
+SELECTION RULES:
 
 1. Select exactly ONE question.
-2. The selected question MUST come from
-   the available questions.
-3. Return ONLY the question ID.
-4. Do not create a new question.
-5. Do not return an explanation.
-6. Prefer the requested difficulty when possible.
-7. Avoid repeating previously asked questions.
-8. Consider the candidate's previous performance
-   when selecting the next question.
-9. Maintain diversity across technical areas.
-10. Avoid repeatedly selecting questions from
-    the same technical source or domain.
-11. When possible, prefer a question from a
-    different source or domain than the most
-    recently asked questions.
-12. Do NOT enforce an equal distribution between
-    LLM and RAG questions.
-13. Technical coverage and adaptive difficulty
-    are more important than equal distribution.
+2. The selected question MUST come from the candidate
+   questions provided above.
+3. Do not create a new question.
+4. Do not select a previously asked question.
+5. Return ONLY the question ID.
+6. Do not return an explanation.
+
+Think carefully about the candidate's ability,
+difficulty, category diversity, and assessment value
+before making the decision.
+
+Return ONLY the selected question ID.
 """
 
     # --------------------------------------------------
@@ -321,12 +478,34 @@ Rules:
 
     llm = get_llm()
 
+    print(
+        f"[PROMPT SIZE] "
+        f"{len(prompt)} characters"
+    )
+
+    llm_start = time.perf_counter()
+
     response = llm.invoke(
         [
             HumanMessage(
                 content=prompt
             )
         ]
+    )
+
+    llm_elapsed = (
+        time.perf_counter()
+        - llm_start
+    )
+
+    print(
+        f"[LLM LATENCY] "
+        f"{llm_elapsed:.2f} seconds"
+    )
+
+    print(
+        f"[LLM RESPONSE] "
+        f"{response.content}"
     )
 
     selected_id = (
@@ -339,7 +518,7 @@ Rules:
 
     selected_question = None
 
-    for question in available_questions:
+    for question in candidate_questions:
 
         if question["id"] == selected_id:
 
@@ -353,24 +532,9 @@ Rules:
 
     if selected_question is None:
 
-        matching_difficulty = [
-            question
-            for question in available_questions
-            if question["difficulty"]
-            == state["current_difficulty"]
-        ]
-
-        if matching_difficulty:
-
-            selected_question = (
-                matching_difficulty[0]
-            )
-
-        else:
-
-            selected_question = (
-                available_questions[0]
-            )
+        selected_question = (
+            candidate_questions[0]
+        )
 
     # --------------------------------------------------
     # Update State
@@ -386,7 +550,8 @@ Rules:
 
     state["question_count"] += 1
 
-    # Important:
+    # IMPORTANT:
+    #
     # Store the ACTUAL difficulty of the
     # question selected by the Agent.
 

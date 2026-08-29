@@ -1,10 +1,20 @@
+from src.interview.evaluator import Evaluator
+from src.interview.session import create_initial_state
+from src.interview.graph import build_interview_graph
+from src.ui.rtl import apply_rtl
 import streamlit as st
 
-from src.ui.rtl import apply_rtl
 
-from src.interview.graph import build_interview_graph
-from src.interview.session import create_initial_state
-from src.interview.evaluator import Evaluator
+# --------------------------------------------------
+# Persian Number Helper
+# --------------------------------------------------
+
+def to_persian_digits(value):
+    translation = str.maketrans(
+        "0123456789",
+        "۰۱۲۳۴۵۶۷۸۹"
+    )
+    return str(value).translate(translation)
 
 
 # --------------------------------------------------
@@ -13,7 +23,7 @@ from src.interview.evaluator import Evaluator
 
 st.set_page_config(
     page_title="ارزیابی شغلی",
-    # page_icon="🎤"
+
 )
 
 apply_rtl()
@@ -32,7 +42,6 @@ if "candidate" not in st.session_state:
     )
 
     if st.button("← بازگشت به صفحه اصلی"):
-
         st.switch_page("app.py")
 
     st.stop()
@@ -104,9 +113,13 @@ with st.sidebar:
 
     if not state["interview_finished"]:
 
+        question_count = to_persian_digits(
+            state["question_count"]
+        )
+
         st.write(
             f"سؤال "
-            f"{state['question_count']} "
+            f"{question_count} "
             f"از ۱۰"
         )
 
@@ -118,7 +131,7 @@ with st.sidebar:
 if state["interview_finished"]:
 
     st.success(
-        "🎉 ارزیابی شما با موفقیت به پایان رسید."
+        "ارزیابی شما با موفقیت به پایان رسید."
     )
 
     # --------------------------------------------------
@@ -136,7 +149,7 @@ if state["interview_finished"]:
     # Overall Score
     # --------------------------------------------------
 
-    st.subheader("📊 نتیجه ارزیابی")
+    st.subheader("نتیجه ارزیابی")
 
     col1, col2 = st.columns(2)
 
@@ -187,11 +200,23 @@ if state["interview_finished"]:
             "difficulty_performance"
         ][difficulty]
 
+        correct = to_persian_digits(
+            stats["correct"]
+        )
+
+        total = to_persian_digits(
+            stats["total"]
+        )
+
+        score = to_persian_digits(
+            f"{stats['score']:.0f}"
+        )
+
         st.write(
             f"**{difficulty_names[difficulty]}** — "
-            f"{stats['correct']} از "
-            f"{stats['total']} "
-            f"({stats['score']:.0f}%)"
+            f"{correct} از "
+            f"{total} "
+            f"({score}٪)"
         )
 
         st.progress(
@@ -228,10 +253,16 @@ question_number = (
 
 progress = question_number / 10
 
+question_number_fa = to_persian_digits(
+    question_number
+)
+
 st.progress(
     progress,
     text=(
-        f"سؤال {question_number} از ۱۰"
+        f"سؤال "
+        f"{question_number_fa} "
+        f"از ۱۰"
     )
 )
 

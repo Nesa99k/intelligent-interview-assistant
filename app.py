@@ -1,5 +1,6 @@
-import streamlit as st
 from src.ui.rtl import apply_rtl
+import streamlit as st
+
 
 # --------------------------------------------------
 # Page Configuration
@@ -9,7 +10,13 @@ st.set_page_config(
     page_title="ارزیابی استخدامی هوشمند",
     # page_icon="🤖"
 )
+
 apply_rtl()
+
+
+# --------------------------------------------------
+# Page Header
+# --------------------------------------------------
 
 st.title("ارزیابی استخدامی")
 
@@ -19,86 +26,89 @@ st.write(
 
 
 # --------------------------------------------------
+# Main Two-Column Layout
+# --------------------------------------------------
+
+left_col, right_col = st.columns(
+    2,
+    gap="large"
+)
+
+
+# ==================================================
 # Personal Information
-# --------------------------------------------------
+# ==================================================
 
-st.subheader(
-    "اطلاعات فردی",
-    divider="rainbow"
-)
+with left_col:
 
-name = st.text_input(
-    "نام",
-    placeholder="مثلاً: علی رضایی"
-)
+    st.subheader(
+        "اطلاعات فردی"
+    )
 
-with st.expander("💡 راهنمای این بخش"):
+    # --------------------------------------------------
+    # Name
+    # --------------------------------------------------
 
-    st.write(
-        "نامی را وارد کنید که می‌خواهید در فرآیند "
-        "ارزیابی با آن شناخته شوید."
+    name = st.text_input(
+        "نام",
+        placeholder="نام خود را برای شروع مصاحبه وارد کنید"
+    )
+
+    # --------------------------------------------------
+    # Work Experience
+    # --------------------------------------------------
+
+    experience = st.radio(
+        "سابقه کاری:",
+        options=[
+            "بدون سابقه کاری",
+            "۱ تا ۳ سال",
+            "۳ تا ۶ سال",
+            "بیش از ۶ سال"
+        ],
+        horizontal=True
+    )
+
+    # --------------------------------------------------
+    # Skills
+    # --------------------------------------------------
+
+    skills = st.pills(
+        "مهارت‌ها:",
+        options=[
+            "Python",
+            "Documentation",
+            "LLM APIs",
+            "Prompt Design",
+            "NLP",
+            "Testing",
+            "Cloud",
+            "Vector DBs",
+            "Prompt Engineering",
+            "Fine-tuning",
+            "Embeddings",
+            "LLMs",
+            "Search Systems",
+            "LangChain",
+        ],
+        selection_mode="multi",
+        default=[],
     )
 
 
-experience = st.text_area(
-    "سابقه کاری",
-    placeholder=(
-        "مثلاً: دو سال تجربه در Python و Machine Learning..."
-    )
-)
-
-with st.expander("💡 راهنمای این بخش"):
-
-    st.write(
-        "به‌طور خلاصه درباره سابقه کاری خود بنویسید. "
-        "می‌توانید نقش‌های قبلی، میزان تجربه و "
-        "فناوری‌هایی که با آن‌ها کار کرده‌اید را ذکر کنید."
-    )
-
-
-skills = st.multiselect(
-    "مهارت‌ها",
-    options=[
-        "Python",
-        "Documentation",
-        "LLM APIs",
-        "Prompt Design",
-        "NLP",
-        "Testing",
-        "Cloud",
-        "Vector DBs",
-        "Prompt Engineering",
-        "Fine-tuning",
-        "Embeddings",
-        "LLMs",
-        "Search Systems",
-        "LangChain",
-    ],
-    placeholder="مهارت‌های خود را انتخاب کنید"
-)
-
-with st.expander("💡 راهنمای این بخش"):
-
-    st.write(
-        "مهارت‌هایی را انتخاب کنید که در آن‌ها "
-        "تجربه یا دانش دارید. می‌توانید چند مهارت را "
-        "به‌صورت هم‌زمان انتخاب کنید."
-    )
-
-
-# --------------------------------------------------
+# ==================================================
 # Job Information
-# --------------------------------------------------
+# ==================================================
 
-st.subheader(
-    "اطلاعات شغلی",
-    divider="rainbow"
-)
+with right_col:
 
-col1, col2 = st.columns(2)
+    st.subheader(
+        "اطلاعات شغلی"
+    )
 
-
-with col1:
+    # --------------------------------------------------
+    # Job Level
+    # --------------------------------------------------
 
     level = st.radio(
         "سطح شغلی:",
@@ -106,11 +116,13 @@ with col1:
             "Junior",
             "Mid-level",
             "Senior"
-        ]
+        ],
+        horizontal=True
     )
 
-
-with col2:
+    # --------------------------------------------------
+    # Position
+    # --------------------------------------------------
 
     position = st.selectbox(
         "موقعیت شغلی:",
@@ -119,51 +131,75 @@ with col2:
             "Generative AI Engineer",
             "RAG Engineer",
             "Prompt Engineer"
-        ]
+        ],
+        index=None,
+        placeholder="موقعیت شغلی را انتخاب کنید"
     )
 
+    # --------------------------------------------------
+    # Company
+    # --------------------------------------------------
 
-company = st.selectbox(
-    "شرکت:",
-    options=[
-        "Amazon",
-        "Meta",
-        "Udemy",
-        "365 Company",
-        "Nestle",
-        "LinkedIn",
-        "Spotify"
-    ]
-)
+    company = st.selectbox(
+        "شرکت:",
+        options=[
+            "Amazon",
+            "Meta",
+            "Udemy",
+            "365 Company",
+            "Nestle",
+            "LinkedIn",
+            "Spotify"
+        ],
+        index=None,
+        placeholder="شرکت را انتخاب کنید"
+    )
 
+    # --------------------------------------------------
+    # Assessment Preview
+    # --------------------------------------------------
 
-# --------------------------------------------------
-# Assessment Preview
-# --------------------------------------------------
+    st.divider()
 
-st.subheader(" خلاصه اطلاعات")
+    st.subheader(
+        "خلاصه اطلاعات"
+    )
 
-st.write(
-    f"**نام:** "
-    f"{name if name else 'وارد نشده'}"
-)
+    preview_col1, preview_col2 = st.columns(2)
 
-st.write(
-    f"**مهارت‌ها:** "
-    f"{', '.join(skills) if skills else 'انتخاب نشده'}"
-)
+    with preview_col1:
 
-st.write(
-    f"**سطح شغلی:** {level}"
-)
+        st.write(
+            f"**نام:** "
+            f"{name if name else 'وارد نشده'}"
+        )
 
-st.write(
-    f"**موقعیت شغلی:** {position}"
-)
+        st.write(
+            f"**سابقه کاری:** "
+            f"{experience if experience else 'انتخاب نشده'}"
+        )
 
-st.write(
-    f"**شرکت:** {company}"
-)
+        st.write(
+            f"**مهارت‌ها:** "
+            f"{', '.join(skills) if skills else 'انتخاب نشده'}"
+        )
+
+    with preview_col2:
+
+        st.write(
+            f"**سطح شغلی:** "
+            f"{level}"
+        )
+
+        st.write(
+            f"**موقعیت شغلی:** "
+            f"{position if position else 'انتخاب نشده'}"
+        )
+
+        st.write(
+            f"**شرکت:** "
+            f"{company if company else 'انتخاب نشده'}"
+        )
 
 
 # --------------------------------------------------
@@ -188,16 +224,28 @@ if st.button(
             "لطفاً نام خود را وارد کنید."
         )
 
-    elif not experience.strip():
+    elif not experience:
 
         st.error(
-            "لطفاً سابقه کاری خود را وارد کنید."
+            "لطفاً سابقه کاری خود را انتخاب کنید."
         )
 
     elif not skills:
 
         st.error(
             "لطفاً حداقل یک مهارت را انتخاب کنید."
+        )
+
+    elif not position:
+
+        st.error(
+            "لطفاً موقعیت شغلی را انتخاب کنید."
+        )
+
+    elif not company:
+
+        st.error(
+            "لطفاً شرکت را انتخاب کنید."
         )
 
     elif position == "Prompt Engineer":
@@ -214,17 +262,11 @@ if st.button(
         # --------------------------------------------------
 
         st.session_state.candidate = {
-
             "name": name,
-
             "experience": experience,
-
             "skills": skills,
-
             "level": level,
-
             "position": position,
-
             "company": company
         }
 
@@ -233,11 +275,8 @@ if st.button(
         # --------------------------------------------------
 
         st.session_state.current_question_index = 0
-
         st.session_state.answers = []
-
         st.session_state.selected_questions = []
-
         st.session_state.interview_started = True
 
         # --------------------------------------------------
