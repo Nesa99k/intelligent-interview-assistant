@@ -14,10 +14,10 @@ This project introduces an adaptive approach where the next question is selected
 
 The system separates:
 
-- deterministic interview state management,
-- controlled question data,
-- answer evaluation,
-- and LLM-based decision making.
+- deterministic interview state management
+- controlled question data
+- answer evaluation
+- LLM-based decision making
 
 This allows the LLM to participate in the interviewer's reasoning process while keeping the actual question content controlled by predefined question banks.
 
@@ -79,6 +79,8 @@ Continue Interview
   <img src="docs/flowchart.svg" alt="Adaptive Interview Activity Flow" width="850">
 </p>
 
+The activity flow illustrates how deterministic application logic and LLM-based decision making work together during the interview.
+
 ---
 
 ## Architecture
@@ -127,12 +129,12 @@ Continue Interview
 
 The LLM is used as a **decision-making component**, rather than as a question generator.
 
-For each subsequent question, the agent receives:
+For each subsequent question, the agent receives a compact representation of:
 
 - Candidate information
 - Previous interview performance
 - Previous question difficulties
-- Previously asked question IDs
+- Previously asked questions
 - Technical categories
 - A controlled set of available questions
 
@@ -157,7 +159,7 @@ Candidate Question Set
        Next Question ID
 ```
 
-The application remains responsible for validating the model response and executing the next interview step.
+The application validates the model response before updating the interview state and continuing the workflow.
 
 This creates a balance between **LLM reasoning and deterministic application control**.
 
@@ -165,9 +167,7 @@ This creates a balance between **LLM reasoning and deterministic application con
 
 ## Latency Optimization
 
-During development, the initial implementation sent a large portion of the question bank to the LLM for every decision.
-
-This resulted in unnecessarily large prompts and higher inference latency.
+During development, the initial implementation sent a large portion of the question bank to the LLM for every decision. This resulted in unnecessarily large prompts and increased inference latency.
 
 The system was optimized by reducing the LLM search space while keeping the final decision with the agent.
 
@@ -177,7 +177,7 @@ The system was optimized by reducing the LLM search space while keeping the fina
 - Reduce the question search space
 - Send only relevant question metadata
 - Limit the candidate question set
-- Keep the LLM responsible for the final selection
+- Keep final question selection with the LLM
 - Measure prompt size and inference latency
 - Validate and handle unexpected LLM responses
 
@@ -196,7 +196,7 @@ Example measurements after optimization:
 [LLM LATENCY] 3.03 seconds
 ```
 
-The key design goal was to **reduce unnecessary context rather than replace LLM reasoning with hard-coded difficulty rules**.
+The key design goal was to **reduce unnecessary context without replacing LLM reasoning with hard-coded difficulty rules**.
 
 ---
 
@@ -260,6 +260,42 @@ The final evaluation intentionally focuses on overall technical performance rath
 
 ---
 
+## Application Preview
+
+The application is implemented as a local Streamlit application.
+
+### Candidate Profile
+
+![Candidate Profile](docs/screenshots/candidate-profile.png)
+
+The candidate provides basic information such as experience, target role, and technical skills before starting the interview.
+
+### Adaptive Technical Interview
+
+![Adaptive Interview](docs/screenshots/adaptive-interview.png)
+
+The interview dynamically selects the next question based on the candidate's previous performance while keeping all questions within the predefined question banks.
+
+### Final Evaluation
+
+![Final Evaluation](docs/screenshots/final-evaluation.png)
+
+The interview concludes with an overall evaluation of the candidate's performance across the assessment.
+
+### Deployment
+
+The current version is designed and tested as a local Streamlit application.
+
+A public deployment is intentionally not included at this stage, as the project is currently maintained as a private portfolio project while the application and documentation are being finalized.
+
+The application can be run locally using:
+
+```bash
+streamlit run app.py
+```
+
+---
+
 ## User Interface
 
 The application uses **Streamlit** and provides a Persian RTL interface with:
@@ -288,7 +324,11 @@ intelligent-interview-assistant/
 │   └── rag_interview_questions.json
 │
 ├── docs/
-│   └── flowchart.svg
+│   ├── flowchart.svg
+│   └── screenshots/
+│       ├── candidate-profile.png
+│       ├── adaptive-interview.png
+│       └── final-evaluation.png
 │
 ├── pages/
 │   └── interview.py
@@ -316,7 +356,8 @@ intelligent-interview-assistant/
 │       └── rtl.py
 │
 ├── .gitignore
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ---
@@ -439,6 +480,8 @@ Adaptive Interview
 Candidate Evaluation
 ```
 
+These capabilities are considered future extensions and are not part of the current implementation.
+
 ---
 
 ## Project Goal
@@ -447,12 +490,12 @@ The goal of this project is to demonstrate how an LLM can be integrated into a s
 
 Instead of using the LLM only for text generation, the system combines:
 
-- structured state management,
-- controlled question banks,
-- deterministic answer evaluation,
-- adaptive assessment,
-- efficient LLM prompting,
-- and agentic next-question selection.
+- structured state management
+- controlled question banks
+- deterministic answer evaluation
+- adaptive assessment
+- efficient LLM prompting
+- agentic next-question selection
 
 This provides a practical example of combining **LLM reasoning with controlled software architecture**.
 
@@ -461,3 +504,7 @@ This provides a practical example of combining **LLM reasoning with controlled s
 ## Author
 
 **Nesa Karimi**
+
+```
+
+```
